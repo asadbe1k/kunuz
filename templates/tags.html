@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if new %}
+<div class="list">
+    <div class="bottom">
+        <div class="yangiliklar">
+            <ul>
+                {% for n in new %}
+                <li class="last-news">
+                    <div class="left-bottom">
+                        <div class="text">
+                            <p> {% if n.video %}
+                                <span><i style="color: #0035a0;" class="fa-solid fa-circle-play"></i></span>
+                                {% endif %}{{n.category}}
+                            </p>
+                            <h6><a href="{% url 'detail' n.pk %}">{{n.title}}...</a></h6>
+                        </div>
+                        <img class="image" src="{{n.image.url}}" alt="image">
+                    </div>
+                    <hr>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="list-right">
+            <div class="songi-yangiliklar">
+                <ul>
+                    <h5>So‘nggi yangiliklar</h5>
+                    {% for n in newss %}
+                    <li class="last-news">
+                        <h6><a href="{% url 'detail' n.pk %}">{{n.title}}...</a></h6>
+                        <p> {% if n.video %}
+                            <span><i style="color: #0035a0;" class="fa-solid fa-circle-play"></i></span>
+                            {% endif %}
+                            {{n.location}} | {{n.date | date:"H:i"}}
+                        </p>
+                        <hr>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="error">
+
+</div>
+{% endif %}
+
+
+{% endblock %}

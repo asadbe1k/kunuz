@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+<!--  -->
+{% load my_custom_tags %}
+<!--  -->
+
+{% block content %}
+<div class="main">
+  <div class="turli-yangiliklar">
+    <div class="top">
+      <div class="top-text">
+        <h3><a href="{% url 'detail' new.pk %}">{{new.title}}</a></h3>
+        <p>
+          <a href="{% url 'detail' new.pk %}">
+            {{new.description| remove_images | safe | truncatechars:420 | striptags}}.
+          </a>
+        </p>
+      </div>
+      <div class="top-image">
+        <a href="{% url 'detail' new.pk %}"><img src="{{new.image.url}}" alt="" /></a>
+      </div>
+    </div>
+
+
+    <div class="bottom">
+      <div class="yangiliklar">
+        <ul>
+          {% for n in news %}
+          <li class="last-news">
+            <div class="left-bottom">
+              <div class="text">
+                <p>
+                  {% if n.video %}
+                  <span><i style="color: #0035a0;" class="fa-solid fa-circle-play"></i></span>
+                  {% endif %}
+                  {{n.category}}
+                </p>
+                <h6><a href="{% url 'detail' n.pk %}">{{n.title}}...</a></h6>
+              </div>
+              <img class="image" src="{{n.image.url}}" alt="image">
+            </div>
+            <hr>
+          </li>
+
+
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="tanlov">
+        <ul>
+          <h5 class="h5">Muharrir Tanlovi</h5>
+          {% for t in tanlov %}
+          <li>
+            <a href="{% url 'detail' t.pk %}">
+              <p> 
+                {% if t.video %}
+                
+                <span><i style="color: #0035a0;" class="fa-solid fa-circle-play"></i></span>
+                {% endif %}
+                {{t.location}}
+              </p>
+              <h5>{{t.title}}</h5>
+              <p>{{t.description| remove_images | safe | truncatechars:110 | striptags}}</p>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <div class="songi-yangiliklar">
+    <ul>
+      <h5>So‘nggi yangiliklar</h5>
+      {% for n in newss %}
+      <li class="last-news">
+        <h6><a href="{% url 'detail' n.pk %}">{{n.title}}...</a></h6>
+        <p>                   {% if n.video %}
+          <span><i style="color: #0035a0;" class="fa-solid fa-circle-play"></i></span>
+          {% endif %}{{n.location}} | {{n.date | date:"H:i"}}
+        </p>
+        <hr>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+
+<h2 class="vd">Video yangiliklar</h2>
+<div class="video-yangiliklar">
+
+  {% for v in video %}
+  <div class="video">
+
+    <img src="{{v.image.url}}" alt="">
+    <div>
+      <h4><a href="{% url 'detail' v.pk %}">{{v.title}}</a></h4>
+      <p>{{v.location}} | {{v.date | date:"H:i"}}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

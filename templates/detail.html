@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="detail">
+
+
+    <div class="article">
+        <p class="date">{{news.category}} | {{ news.date_with_offset|date:"H:i"}} / {{news.date | date:'m.d.Y'}} <span
+                style="margin-left: 25px; color: rgba(0, 0, 0, 0.179);"><i class="fa-solid fa-eye"></i>
+                {{news.view}}</span></p>
+        <h2 class="title"> {{news.title}}</h2>
+        {% if news.video %}
+        <iframe width="858" height="455" src="https://www.youtube.com/embed/{{news.video}}"
+            title="8 noyabr yangiliklari: O‘zbekistonda ro‘y bergan muhim voqea va hodisalar" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        {% endif %}
+        <div class="description">{{news.description | safe}}</div>
+
+        <div class="tags">
+            <ul>
+                {% for t in news.tag.all %}
+                <li><a href="{% url 'tags' %}?tag={{ t.id }}">#{{t.name}}</a></li>
+                {% endfor %}
+            </ul>
+
+
+        </div>
+        <div class="rating">
+            <h3>{{ news.avg_rating|floatformat:1 }} <i class="fa-solid fa-star"></i></h3>
+
+            <ul>
+                <li class="rating-li">
+                    <a href="{% url 'rating' 5 news.pk %}"><i class="fa-solid fa-star"></i></a>
+                </li>
+                <li class="rating-li">
+                    <a href="{% url 'rating' 4 news.pk %}"><i class="fa-solid fa-star"></i></a>
+                </li>
+                <li class="rating-li">
+                    <a href="{% url 'rating' 3 news.pk %}"><i class="fa-solid fa-star"></i></a>
+                </li>
+                <li class="rating-li">
+                    <a href="{% url 'rating' 2 news.pk %}"><i class="fa-solid fa-star"></i></a>
+                </li>
+                <li class="rating-li">
+                    <a href="{% url 'rating' 1 news.pk %}"><i class="fa-solid fa-star"></i></a>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="related">
+        <ul>
+            <h5>Tavsiya qilamiz</h5>
+            {% for n in related %}
+            <li class="last-news">
+                <h6><a href="{% url 'detail' n.pk %}">{{n.title}}...</a></h6>
+                <p> 
+                    {% if n.video %}
+                    <span><i style="color: #0035a0;" class="fa-solid fa-circle-play"></i></span>
+                    {% endif %}
+                    {{n.location}} | {{n.date | date:"H:i"}}
+                </p>
+                <hr>
+            </li>
+            {% endfor %}
+        </ul>
+
+
+        <div class="songi-yangiliklar">
+            <ul>
+                <h5>So‘nggi yangiliklar</h5>
+                {% for n in last_news %}
+                <li class="last-news">
+                    <h6><a href="{% url 'detail' n.pk %}">{{n.title}}...</a></h6>
+                    <p> 
+                        {% if n.video %}
+                        <span><i style="color: #0035a0;" class="fa-solid fa-circle-play"></i></span>
+                        {% endif %}
+                        {{n.location}} | {{n.date | date:"H:i"}}
+                    </p>
+                    <hr>
+                </li>
+                {% endfor %}
+            </ul>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<div class="comment-sec">
+    <div class="comments">
+        <h4 style="font-weight: 800;">Comments</h4>
+        <div class="comm">
+            {% for comment in comments %}
+            <div class="com">
+                <h5>@{{comment.author}}</h5>
+                <div >{{comment.description}}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="comment">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <label for="name">name:</label><br>
+            <input type="text" name="name" required>
+            <br>
+            <label for="comment">comment:</label><br>
+            <textarea name="comment" id="" required></textarea><br>
+            <button type="submit">send</button>
+
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
